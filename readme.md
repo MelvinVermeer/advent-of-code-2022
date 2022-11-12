@@ -11,6 +11,10 @@ yarn install
 yarn test
 ```
 
+## Debugging a single test
+
+Enure only your test is run (by renaming `it` to `fit`), and then use `F5` (Run and Debug) in your editor.
+
 ## Template
 
 Creating a new src, test and data file for a day is automated. To create a new set run call `yarn new <challenge>`. Example:
