@@ -1,5 +1,5 @@
-const fs = require("fs");
-const shell = require("child_process").execSync;
+import fs from "fs";
+import { execSync } from "child_process";
 
 const currentDayNumbers = fs
   .readdirSync("src/")
@@ -12,22 +12,18 @@ const title = process.argv[process.argv.length - 1];
 const kebabTitle = title.replace(/ /g, "-").toLowerCase();
 const newNumber = nextDay.toString().padStart(2, "0");
 
-const cb = (err) => {
-  if (err) throw err;
-};
+fs.copyFileSync("test/data/00", `test/data/${newNumber}`);
+fs.copyFileSync("test/00.test.ts", `test/${newNumber}.test.ts`);
+fs.copyFileSync("src/00-template.ts", `src/${newNumber}-${kebabTitle}.ts`);
 
-fs.copyFile("test/data/00", `test/data/${newNumber}`, cb);
-
-fs.copyFile("test/00.test.ts", `test/${newNumber}.test.ts`, cb);
-
-fs.copyFile("src/00-template.ts", `src/${newNumber}-${kebabTitle}.ts`, cb);
-
-shell(
+execSync(
   `sed -i "" "s!00 - Template!${newNumber} - ${title}!g" ./test/${newNumber}.test.ts`
 );
 
-shell(
+execSync(
   `sed -i "" "s!00-template!${newNumber}-${kebabTitle}!g" ./test/${newNumber}.test.ts`
 );
 
-shell(`sed -i "" "s!data/00!data/${newNumber}!g" ./test/${newNumber}.test.ts`);
+execSync(
+  `sed -i "" "s!data/00!data/${newNumber}!g" ./test/${newNumber}.test.ts`
+);
