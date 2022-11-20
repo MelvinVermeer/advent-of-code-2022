@@ -8,6 +8,7 @@ If you want to test the code, run the following commands
 
 ```
 yarn install
+yarn build
 yarn test
 ```
 
