@@ -21,5 +21,5 @@ Enure only your test is run (by renaming `it` to `fit`), and then use `F5` (Run 
 Creating a new src, test and data file for a day is automated. To create a new set run call `yarn new <challenge>`. Example:
 
 ```
-yarn new "Sonar Sweep"
+yarn new "Sonar Sweepz"
 ```
