@@ -4,7 +4,8 @@
   "description": "",
   "scripts": {
     "test": "jest",
-    "new": "ts-node new.ts"
+    "new": "ts-node new.ts",
+    "build": "tsc --noEmit"
   },
   "license": "ISC",
   "devDependencies": {
