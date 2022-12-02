@@ -1,4 +1,4 @@
-const sum = (a: number, b: number) => a + b;
+import { sum } from "./shared/math";
 
 export const part1 = (elves: string[][]): any =>
   Math.max(...elves.map((elf) => elf.map(Number).reduce(sum)));

@@ -10,12 +10,7 @@ describe("02 - Rock Paper Scissors", () => {
     it("Sample", () => {
       expect(part1(sample)).toEqual(15);
     });
-    it("Sample2", () => {
-      expect(part1(["A Z"])).toEqual(3);
-    });
-    it("Sample2", () => {
-      expect(part1(["C X"])).toEqual(7);
-    });
+
     it("Answer", () => {
       expect(part1(data)).toEqual(12645);
     });

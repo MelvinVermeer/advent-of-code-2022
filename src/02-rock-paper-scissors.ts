@@ -1,7 +1,8 @@
-const sum = (a: number, b: number) => a + b;
+import { sum } from "./shared/math";
 
 const getLosingMove = (o: number) => (o + 2) % 3;
 const getWinningMove = (o: number) => (o + 1) % 3;
+const toYourShape = (value: number) => String.fromCharCode(value + 88);
 
 const scoreMatch = (match: string): number => {
   const opponent = match.charCodeAt(0) - 65;
@@ -18,26 +19,24 @@ const scoreMatch = (match: string): number => {
   return 3 + you + 1;
 };
 
-const toYourShape = (value: number) => String.fromCharCode(value + 88);
-
 const convertInstructionToMatch = (instruction: string): string => {
-  const opponent = instruction.charCodeAt(0) - 65;
-  const desirerResult = instruction.charAt(2);
+  const opponentMove = instruction.charCodeAt(0) - 65;
+  const desiredResult = instruction.charAt(2);
   const opponentShape = instruction.charAt(0);
 
-  if (desirerResult === "X") {
-    return `${opponentShape} ${toYourShape(getLosingMove(opponent))}`;
+  if (desiredResult === "X") {
+    return `${opponentShape} ${toYourShape(getLosingMove(opponentMove))}`;
   }
 
-  if (desirerResult === "Z") {
-    return `${opponentShape} ${toYourShape(getWinningMove(opponent))}`;
+  if (desiredResult === "Z") {
+    return `${opponentShape} ${toYourShape(getWinningMove(opponentMove))}`;
   }
 
-  return `${opponentShape} ${toYourShape(opponent)}`;
+  return `${opponentShape} ${toYourShape(opponentMove)}`;
 };
 
 export const part1 = (data: string[]): number =>
   data.map(scoreMatch).reduce(sum);
 
 export const part2 = (data: string[]): number =>
-  data.map(convertInstructionToMatch).map(scoreMatch).reduce(sum);
+  part1(data.map(convertInstructionToMatch));
