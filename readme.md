@@ -14,7 +14,7 @@ yarn test
 
 ## Debugging a single test
 
-Enure only your test is run (by renaming `it` to `fit`), and then use `F5` (Run and Debug) in your editor.
+Enure only your test is run (by renaming `it` to `fit`), and then use `F5` (Run and Debug) in your editor. The `launch.json` is configured so that only the current open test is passed to Jest.
 
 ## Template
 
