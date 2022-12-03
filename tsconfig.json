@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
     "esModuleInterop": true,
+    "target": "ESNext",
     "importsNotUsedAsValues": "error",
     "lib": ["esnext"],
     "module": "CommonJS",
