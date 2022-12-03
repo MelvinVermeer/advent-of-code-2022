@@ -13,7 +13,7 @@ const kebabTitle = title.replace(/ /g, "-").toLowerCase();
 const newNumber = nextDay.toString().padStart(2, "0");
 
 fs.copyFileSync("test/data/00", `test/data/${newNumber}`);
-fs.copyFileSync("test/00.test.ts", `test/${newNumber}.test.ts`);
+fs.copyFileSync("test/00.test.ts", `test/${newNumber}-${kebabTitle}.test.ts`);
 fs.copyFileSync("src/00-template.ts", `src/${newNumber}-${kebabTitle}.ts`);
 
 execSync(
