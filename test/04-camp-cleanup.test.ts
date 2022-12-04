@@ -25,11 +25,11 @@ describe("04 - Camp Cleanup", () => {
 
   describe("Part 2", () => {
     it("Sample", () => {
-      expect(part2(sample)).toEqual(sample);
+      expect(part2(sample)).toEqual(4);
     });
 
-    xit("Answer", () => {
-      expect(part2(data)).toEqual(data);
+    it("Answer", () => {
+      expect(part2(data)).toEqual(0);
     });
   });
 });

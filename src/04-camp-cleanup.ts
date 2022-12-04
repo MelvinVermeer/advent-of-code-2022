@@ -20,6 +20,11 @@ export const part1 = (data: string[]): number => {
   return a.length;
 };
 
-export const part2 = (data: any): any => {
-  return data;
+export const part2 = (data: string[]): number => {
+  const a = data
+    .map((x) => x.split(",").map(rangeToArray))
+    .map(intersect)
+    .filter((x) => x.length > 0);
+
+  return a.length;
 };
