@@ -22,3 +22,16 @@ export const groupsOfSizeN =
     groups[groups.length] = [rucksack];
     return groups;
   };
+
+export const arrayEqual = <T>(a: T[], b: T[]): boolean =>
+  a.length === b.length &&
+  a.every((item) => b.some((x) => x === item)) &&
+  b.every((item) => a.some((x) => x === item));
+
+/** Converts a range like 4-7 to an array [4,5,6,7] */
+export const rangeToArray = (range: string) => {
+  const [start, end] = range.split("-").map(Number);
+  return new Array(end - start + 1).fill(start).map((n, i) => n + i);
+};
+
+export const hasLength = <T>(array: T[]) => array.length > 0;
