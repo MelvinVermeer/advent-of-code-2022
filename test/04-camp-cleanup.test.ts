@@ -29,7 +29,7 @@ describe("04 - Camp Cleanup", () => {
     });
 
     it("Answer", () => {
-      expect(part2(data)).toEqual(0);
+      expect(part2(data)).toEqual(841);
     });
   });
 });

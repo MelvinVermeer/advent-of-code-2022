@@ -1,30 +1,15 @@
-import { intersect } from "./shared/array";
+import { arrayEqual, hasLength, intersect, rangeToArray } from "./shared/array";
 
-const arrayEqual = <T>(a: T[], b: T[]): boolean => {
-  return a.length === b.length && a.every((item) => b.some((x) => x === item));
-};
-
-const rangeToArray = (s: string) => {
-  const [start, end] = s.split("-").map(Number);
-  const a = new Array(end - start + 1).fill(start);
-  return a.map((n, i) => n + i);
-};
-
-export const part1 = (data: string[]): number => {
-  const a = data
+export const part1 = (data: string[]): number =>
+  data
     .map((x) => x.split(",").map(rangeToArray))
-    .filter(
-      (x) => arrayEqual(intersect(x), x[0]) || arrayEqual(intersect(x), x[1])
-    );
+    .filter(([pair1, pair2]) => {
+      const overlap = intersect([pair1, pair2]);
+      return arrayEqual(overlap, pair1) || arrayEqual(overlap, pair2);
+    }).length;
 
-  return a.length;
-};
-
-export const part2 = (data: string[]): number => {
-  const a = data
+export const part2 = (data: string[]): number =>
+  data
     .map((x) => x.split(",").map(rangeToArray))
     .map(intersect)
-    .filter((x) => x.length > 0);
-
-  return a.length;
-};
+    .filter(hasLength).length;
