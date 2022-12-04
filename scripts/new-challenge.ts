@@ -17,13 +17,13 @@ fs.copyFileSync("test/00.test.ts", `test/${newNumber}-${kebabTitle}.test.ts`);
 fs.copyFileSync("src/00-template.ts", `src/${newNumber}-${kebabTitle}.ts`);
 
 execSync(
-  `sed -i "" "s!00 - Template!${newNumber} - ${title}!g" ./test/${newNumber}.test.ts`
+  `sed -i "" "s!00 - Template!${newNumber} - ${title}!g" ./test/${newNumber}-${kebabTitle}.test.ts`
 );
 
 execSync(
-  `sed -i "" "s!00-template!${newNumber}-${kebabTitle}!g" ./test/${newNumber}.test.ts`
+  `sed -i "" "s!00-template!${newNumber}-${kebabTitle}!g" ./test/${newNumber}-${kebabTitle}.test.ts`
 );
 
 execSync(
-  `sed -i "" "s!data/00!data/${newNumber}!g" ./test/${newNumber}.test.ts`
+  `sed -i "" "s!data/00!data/${newNumber}!g" ./test/${newNumber}-${kebabTitle}.test.ts`
 );
