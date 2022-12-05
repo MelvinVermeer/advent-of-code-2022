@@ -32,7 +32,7 @@ describe("05 - Supply Stacks", () => {
     });
 
     it("Answer", () => {
-      expect(part2(data)).toEqual("data");
+      expect(part2(data)).toEqual("BQDNWJPVJ");
     });
   });
 });
