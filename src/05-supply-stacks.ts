@@ -10,7 +10,7 @@ const transpose = <T>(matrix: T[][]): T[][] => {
 
 const last = <T>(array: T[]) => array[array.length - 1];
 
-export const part1 = (data: string[]): string => {
+const parse = (data: string[]) => {
   const a = data.indexOf("");
 
   const s1 = data
@@ -30,6 +30,14 @@ export const part1 = (data: string[]): string => {
     };
   });
 
+  return {
+    stacks,
+    instructions,
+  };
+};
+
+export const part1 = (data: string[]): string => {
+  const { stacks, instructions } = parse(data);
   for (const { count, from, to } of instructions) {
     for (let i = 0; i < count; i++) {
       const pickedUpItem = stacks[from].pop();
@@ -39,11 +47,19 @@ export const part1 = (data: string[]): string => {
     }
   }
 
-  const r = stacks.map(last).join("");
-
-  return r;
+  return stacks.map(last).join("");
 };
 
-export const part2 = (data: any): any => {
-  return data;
+export const part2 = (data: string[]): string => {
+  const { stacks, instructions } = parse(data);
+
+  for (const { count, from, to } of instructions) {
+    const pickedUpItems = stacks[from].splice(
+      stacks[from].length - count,
+      count
+    );
+    stacks[to].push(...pickedUpItems);
+  }
+
+  return stacks.map(last).join("");
 };

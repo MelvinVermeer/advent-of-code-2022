@@ -22,17 +22,17 @@ describe("05 - Supply Stacks", () => {
     });
 
     it("Answer", () => {
-      expect(part1(data)).toEqual(data);
+      expect(part1(data)).toEqual("QPJPLMNNR");
     });
   });
 
   describe("Part 2", () => {
     it("Sample", () => {
-      expect(part2(sample)).toEqual(sample);
+      expect(part2(sample)).toEqual("MCD");
     });
 
-    xit("Answer", () => {
-      expect(part2(data)).toEqual(data);
+    it("Answer", () => {
+      expect(part2(data)).toEqual("data");
     });
   });
 });
