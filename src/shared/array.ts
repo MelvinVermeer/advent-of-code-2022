@@ -35,3 +35,8 @@ export const rangeToArray = (range: string) => {
 };
 
 export const hasLength = <T>(array: T[]) => array.length > 0;
+
+export const transpose = <T>(prev: T[][], next: T[]) =>
+  next.map((_, i) => (prev[i] ?? []).concat(next[i]));
+
+export const last = <T>(array: T[]) => array[array.length - 1];
