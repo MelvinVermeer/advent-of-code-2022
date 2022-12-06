@@ -3,7 +3,7 @@
     "esModuleInterop": true,
     "target": "ESNext",
     "importsNotUsedAsValues": "error",
-    "lib": ["esnext"],
+    "lib": ["esnext", "DOM"],
     "module": "CommonJS",
     "moduleResolution": "node",
     "noEmit": true,
