@@ -22,12 +22,18 @@ describe("06 - Tuning Trouble", () => {
   });
 
   describe("Part 2", () => {
-    it("Sample", () => {
-      expect(part2(sample)).toEqual(sample);
+    test.each([
+      ["mjqjpqmgbljsphdztnvjfqwrcgsmlb", 19],
+      ["bvwbjplbgvbhsrlpgdmjqwftvncz", 23],
+      ["nppdvjthqldpwncqszvftbrmjlhg", 23],
+      ["nznrnfrfntjfmvfwmzdfjlvtqnbhcprsg", 29],
+      ["zcfzfwzzqfrljwzlrfnpqdbhtmscgvjw", 26],
+    ])("Sample", (input, result) => {
+      expect(part2(input)).toEqual(result);
     });
 
-    xit("Answer", () => {
-      expect(part2(data)).toEqual(data);
+    it("Answer", () => {
+      expect(part2(data)).toEqual(0);
     });
   });
 });
