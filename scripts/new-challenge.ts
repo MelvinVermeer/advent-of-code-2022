@@ -1,44 +1,49 @@
 import fs from "fs";
 import { execSync } from "child_process";
-const chrome = require("chrome-cookies-secure");
+import * as dotenv from "dotenv";
+dotenv.config();
 
-async function newChallenge() {
-  const currentDayNumbers = fs
-    .readdirSync("src/")
-    .filter((file) => fs.lstatSync("src/" + file).isFile())
-    .map((filename) => filename.split("-")[0])
-    .map((x) => Number(x));
+const currentDayNumbers = fs
+  .readdirSync("src/")
+  .filter((file) => fs.lstatSync("src/" + file).isFile())
+  .map((filename) => filename.split("-")[0])
+  .map((x) => Number(x));
 
-  const nextDay = Math.max(...currentDayNumbers) + 1;
-  const title = process.argv[process.argv.length - 1];
-  const kebabTitle = title.replace(/ /g, "-").toLowerCase();
-  const newNumber = nextDay.toString().padStart(2, "0");
+const nextDay = Math.max(...currentDayNumbers) + 1;
+const title = process.argv[process.argv.length - 1];
+const kebabTitle = title.replace(/ /g, "-").toLowerCase();
+const newNumber = nextDay.toString().padStart(2, "0");
 
-  fs.copyFileSync("test/data/00", `test/data/${newNumber}`);
-  fs.copyFileSync("test/00.test.ts", `test/${newNumber}-${kebabTitle}.test.ts`);
-  fs.copyFileSync("src/00-template.ts", `src/${newNumber}-${kebabTitle}.ts`);
+fs.copyFileSync("test/data/00", `test/data/${newNumber}`);
+fs.copyFileSync("test/00.test.ts", `test/${newNumber}-${kebabTitle}.test.ts`);
+fs.copyFileSync("src/00-template.ts", `src/${newNumber}-${kebabTitle}.ts`);
 
-  execSync(
-    `sed -i "" "s!00 - Template!${newNumber} - ${title}!g" ./test/${newNumber}-${kebabTitle}.test.ts`
-  );
+execSync(
+  `sed -i "" "s!00 - Template!${newNumber} - ${title}!g" ./test/${newNumber}-${kebabTitle}.test.ts`
+);
 
-  execSync(
-    `sed -i "" "s!00-template!${newNumber}-${kebabTitle}!g" ./test/${newNumber}-${kebabTitle}.test.ts`
-  );
+execSync(
+  `sed -i "" "s!00-template!${newNumber}-${kebabTitle}!g" ./test/${newNumber}-${kebabTitle}.test.ts`
+);
 
-  execSync(
-    `sed -i "" "s!data/00!data/${newNumber}!g" ./test/${newNumber}-${kebabTitle}.test.ts`
-  );
+execSync(
+  `sed -i "" "s!data/00!data/${newNumber}!g" ./test/${newNumber}-${kebabTitle}.test.ts`
+);
+
+async function loadPuzzleData() {
+  if (!process.env.session) {
+    console.log(
+      "Add your AdventOfCode session cookie in the .env file to automatically populate your daily puzzle input"
+    );
+    console.log("Example: session=53616c74....");
+    return;
+  }
 
   try {
-    const { session } = await chrome.getCookiesPromised(
-      "https://www.adventofcode.com"
-    );
-
     const response = await fetch(
-      `https://adventofcode.com/2022/day/00${nextDay}/input`,
+      `https://adventofcode.com/2022/day/${nextDay}/input`,
       {
-        headers: { cookie: `session=${session}` },
+        headers: { cookie: `session=${process.env.session}` },
       }
     );
 
@@ -52,4 +57,4 @@ async function newChallenge() {
   }
 }
 
-newChallenge();
+loadPuzzleData();
