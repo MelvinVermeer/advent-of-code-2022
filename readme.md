@@ -23,3 +23,11 @@ Creating a new src, test and data file for a day is automated. To create a new s
 ```
 yarn new "Sonar Sweep"
 ```
+
+If you provide the AdventOfCode session cookie in a `.env` file your daily puzzle input will automatically be populated.
+
+Example:
+
+```
+session=53616c7...
+```

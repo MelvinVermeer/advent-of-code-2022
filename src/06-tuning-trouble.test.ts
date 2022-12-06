@@ -1,7 +1,7 @@
 import { part1, part2 } from "../src/06-tuning-trouble";
 import { readFileSync } from "fs";
 
-const data = readFileSync("test/data/06", "utf8");
+const data = readFileSync("src/data/06", "utf8");
 
 describe("06 - Tuning Trouble", () => {
   const sample = [""];

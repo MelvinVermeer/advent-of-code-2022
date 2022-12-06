@@ -14,20 +14,23 @@ const title = process.argv[process.argv.length - 1];
 const kebabTitle = title.replace(/ /g, "-").toLowerCase();
 const newNumber = nextDay.toString().padStart(2, "0");
 
-fs.copyFileSync("test/data/00", `test/data/${newNumber}`);
-fs.copyFileSync("test/00.test.ts", `test/${newNumber}-${kebabTitle}.test.ts`);
+fs.copyFileSync("src/data/00", `src/data/${newNumber}`);
+fs.copyFileSync(
+  "src/00-template.test.ts",
+  `src/${newNumber}-${kebabTitle}.test.ts`
+);
 fs.copyFileSync("src/00-template.ts", `src/${newNumber}-${kebabTitle}.ts`);
 
 execSync(
-  `sed -i "" "s!00 - Template!${newNumber} - ${title}!g" ./test/${newNumber}-${kebabTitle}.test.ts`
+  `sed -i "" "s!00 - Template!${newNumber} - ${title}!g" ./src/${newNumber}-${kebabTitle}.test.ts`
 );
 
 execSync(
-  `sed -i "" "s!00-template!${newNumber}-${kebabTitle}!g" ./test/${newNumber}-${kebabTitle}.test.ts`
+  `sed -i "" "s!00-template!${newNumber}-${kebabTitle}!g" ./src/${newNumber}-${kebabTitle}.test.ts`
 );
 
 execSync(
-  `sed -i "" "s!data/00!data/${newNumber}!g" ./test/${newNumber}-${kebabTitle}.test.ts`
+  `sed -i "" "s!data/00!data/${newNumber}!g" ./src/${newNumber}-${kebabTitle}.test.ts`
 );
 
 async function loadPuzzleData() {
@@ -48,7 +51,7 @@ async function loadPuzzleData() {
     );
 
     if (response.ok) {
-      fs.writeFileSync(`test/data/${newNumber}`, await response.text());
+      fs.writeFileSync(`src/data/${newNumber}`, await response.text());
     } else {
       console.log(response.status, response.statusText);
     }

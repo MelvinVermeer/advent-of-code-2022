@@ -1,7 +1,7 @@
-import { part1, part2 } from "../src/00-template";
+import { part1, part2 } from "./00-template";
 import { readFileSync } from "fs";
 
-const data = readFileSync("test/data/00", "utf8").split("\n");
+const data = readFileSync("src/data/00", "utf8").split("\n");
 
 describe("00 - Template", () => {
   const sample = [""];

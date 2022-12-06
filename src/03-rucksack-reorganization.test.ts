@@ -1,7 +1,7 @@
 import { part1, part2 } from "../src/03-rucksack-reorganization";
 import { readFileSync } from "fs";
 
-const data = readFileSync("test/data/03", "utf8").split("\n");
+const data = readFileSync("src/data/03", "utf8").split("\n");
 
 describe("03 - Rucksack Reorganization", () => {
   const sample = [

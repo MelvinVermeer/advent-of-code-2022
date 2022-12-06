@@ -1,7 +1,7 @@
 import { part1, part2 } from "../src/01-calorie-counting";
 import { readFileSync } from "fs";
 
-const data = readFileSync("test/data/01", "utf8")
+const data = readFileSync("src/data/01", "utf8")
   .split("\n\n")
   .map((x) => x.split("\n"));
 
