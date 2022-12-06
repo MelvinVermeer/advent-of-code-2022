@@ -14,18 +14,7 @@ async function newChallenge() {
   const kebabTitle = title.replace(/ /g, "-").toLowerCase();
   const newNumber = nextDay.toString().padStart(2, "0");
 
-  const { session } = await chrome.getCookiesPromised(
-    "https://www.adventofcode.com"
-  );
-
-  const response = await fetch(
-    `https://adventofcode.com/2022/day/${newNumber}/input`,
-    {
-      headers: { cookie: `session=${session}` },
-    }
-  );
-
-  fs.writeFileSync(`test/data/${newNumber}`, await response.text());
+  fs.copyFileSync("test/data/00", `test/data/${newNumber}`);
   fs.copyFileSync("test/00.test.ts", `test/${newNumber}-${kebabTitle}.test.ts`);
   fs.copyFileSync("src/00-template.ts", `src/${newNumber}-${kebabTitle}.ts`);
 
@@ -40,6 +29,27 @@ async function newChallenge() {
   execSync(
     `sed -i "" "s!data/00!data/${newNumber}!g" ./test/${newNumber}-${kebabTitle}.test.ts`
   );
+
+  try {
+    const { session } = await chrome.getCookiesPromised(
+      "https://www.adventofcode.com"
+    );
+
+    const response = await fetch(
+      `https://adventofcode.com/2022/day/00${nextDay}/input`,
+      {
+        headers: { cookie: `session=${session}` },
+      }
+    );
+
+    if (response.ok) {
+      fs.writeFileSync(`test/data/${newNumber}`, await response.text());
+    } else {
+      console.log(response.status, response.statusText);
+    }
+  } catch (error) {
+    console.log(error);
+  }
 }
 
 newChallenge();
