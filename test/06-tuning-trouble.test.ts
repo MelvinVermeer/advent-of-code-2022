@@ -33,7 +33,7 @@ describe("06 - Tuning Trouble", () => {
     });
 
     it("Answer", () => {
-      expect(part2(data)).toEqual(0);
+      expect(part2(data)).toEqual(2625);
     });
   });
 });
