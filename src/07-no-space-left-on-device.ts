@@ -1,98 +1,69 @@
-import { last, unique } from "./shared/array";
+import { last } from "./shared/array";
 import { sum } from "./shared/math";
-import { mapValues } from "./shared/object";
-
-type ResultType = {
-  currentPath: string[];
-  folders: Record<string, any>;
-};
+import { descending } from "./shared/sorting";
 
 const isFile = (s: string) => !s.startsWith("$") && !s.startsWith("dir");
 
-const getFileList = (data: string[]) => {
-  let currentPath: string[] = [];
-  let fullPath = "";
+const getFileList = (data: string[]): string[] => {
+  let segments: string[] = [];
   const files: string[] = [];
 
   for (const line of data) {
     if (isFile(line)) {
       const [size, file] = line.split(" ");
-      files.push(`${fullPath}/${file} ${size}`);
+      files.push(`${segments.join("/")}/${file} ${size}`);
     }
 
     if (line.startsWith("$ cd")) {
       const dir = line.split(" ")[2];
-
       if (dir === "/") {
-        currentPath = [""];
+        segments = [""];
       } else if (dir === "..") {
-        currentPath.pop();
+        segments.pop();
       } else {
-        currentPath.push(dir);
+        segments.push(dir);
       }
-      fullPath = currentPath.join("/");
     }
   }
 
   return files;
 };
 
-export const part1 = (data: string[]): number => {
-  const files = getFileList(data);
-  //console.log(files);
-
+const getFolderSizes = (fileList: string[]) => {
   const result: Record<string, number> = {};
 
-  // every file increments all of its parents folders size
-  for (const file of files) {
-    //[ '', 'a', 'e', 'i 584' ]
-    const [root, ...segments] = file.split("/");
+  for (const file of fileList) {
+    const segments = file.split("/");
     const fileSize = Number(last(last(segments).split(" ")));
 
-    const pathSegments = ["", ...segments];
-    // console.log("-----------------------");
-    for (let i = 0; i < pathSegments.length - 1; i++) {
-      const path = pathSegments.slice(0, i + 1).join("/") || "/";
+    for (let i = 0; i < segments.length - 1; i++) {
+      const path = segments.slice(0, i + 1).join("/");
       result[path] = (result[path] ?? 0) + fileSize;
-      // console.log({
-      //   // segments: pathSegments,
-      //   element: ,
-      //   size: fileSize,
-      // });
     }
   }
 
-  // console.log(result);
+  return result;
+};
+
+export const part1 = (data: string[]): number => {
+  const files = getFileList(data);
+  const result = getFolderSizes(files);
 
   return Object.values(result)
-    .filter((x) => x <= 100_000)
+    .filter((folderSize) => folderSize <= 100_000)
     .reduce(sum);
 };
 
 export const part2 = (data: any): any => {
-  const totalSpace = 70_000_000;
-  const neededSpace = 30_000_000;
-
   const files = getFileList(data);
-  const result: Record<string, number> = {};
+  const result = getFolderSizes(files);
 
-  for (const file of files) {
-    const [root, ...segments] = file.split("/");
-    const fileSize = Number(last(last(segments).split(" ")));
+  const availableSpace = 70_000_000 - result[""]; // "" Refers to the root dir
+  const minimumCleanUp = 30_000_000 - availableSpace;
 
-    const pathSegments = ["", ...segments];
-    for (let i = 0; i < pathSegments.length - 1; i++) {
-      const path = pathSegments.slice(0, i + 1).join("/") || "/";
-      result[path] = (result[path] ?? 0) + fileSize;
-    }
-  }
-
-  console.log(result);
-  const availableSpace = totalSpace - result["/"];
-
-  const minimunCleanUp = neededSpace - availableSpace;
-
-  return Object.values(result)
-    .filter((f) => f >= minimunCleanUp)
-    .sort((a, b) => a - b)[0];
+  return last(
+    Object.values(result)
+      .filter((folderSize) => folderSize >= minimumCleanUp)
+      .sort(descending)
+  );
 };
