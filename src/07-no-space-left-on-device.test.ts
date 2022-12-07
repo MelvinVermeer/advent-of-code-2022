@@ -35,7 +35,7 @@ describe("07 - No Space Left On Device", () => {
       expect(part1(sample)).toEqual(95437);
     });
 
-    it("Answer", () => {
+    xit("Answer", () => {
       // 1232219 too low
       expect(part1(data)).toBe(1350966);
     });
@@ -43,11 +43,11 @@ describe("07 - No Space Left On Device", () => {
 
   describe("Part 2", () => {
     it("Sample", () => {
-      expect(part2(sample)).toEqual(sample);
+      expect(part2(sample)).toEqual(24933642);
     });
 
-    xit("Answer", () => {
-      expect(part2(data)).toEqual(data);
+    it("Answer", () => {
+      expect(part2(data)).toEqual(6296435);
     });
   });
 });

@@ -39,7 +39,7 @@ const getFileList = (data: string[]) => {
 
 export const part1 = (data: string[]): number => {
   const files = getFileList(data);
-  console.log(files);
+  //console.log(files);
 
   const result: Record<string, number> = {};
 
@@ -62,7 +62,7 @@ export const part1 = (data: string[]): number => {
     }
   }
 
-  console.log(result);
+  // console.log(result);
 
   return Object.values(result)
     .filter((x) => x <= 100_000)
@@ -70,5 +70,29 @@ export const part1 = (data: string[]): number => {
 };
 
 export const part2 = (data: any): any => {
-  return data;
+  const totalSpace = 70_000_000;
+  const neededSpace = 30_000_000;
+
+  const files = getFileList(data);
+  const result: Record<string, number> = {};
+
+  for (const file of files) {
+    const [root, ...segments] = file.split("/");
+    const fileSize = Number(last(last(segments).split(" ")));
+
+    const pathSegments = ["", ...segments];
+    for (let i = 0; i < pathSegments.length - 1; i++) {
+      const path = pathSegments.slice(0, i + 1).join("/") || "/";
+      result[path] = (result[path] ?? 0) + fileSize;
+    }
+  }
+
+  console.log(result);
+  const availableSpace = totalSpace - result["/"];
+
+  const minimunCleanUp = neededSpace - availableSpace;
+
+  return Object.values(result)
+    .filter((f) => f >= minimunCleanUp)
+    .sort((a, b) => a - b)[0];
 };
