@@ -1,3 +1,4 @@
+import { last, unique } from "./shared/array";
 import { sum } from "./shared/math";
 import { mapValues } from "./shared/object";
 
@@ -8,69 +9,63 @@ type ResultType = {
 
 const isFile = (s: string) => !s.startsWith("$") && !s.startsWith("dir");
 
-const parseDirs = (data: string[]) => {
-  const directories = data.reduce(
-    (result, line) => {
-      if (line.startsWith("$")) {
-        const [dollar, command, path] = line.split(" ");
-        if (command === "cd") {
-          if (path === "/") {
-            result.currentPath = [];
-          } else if (path === "..") {
-            result.currentPath.pop();
-          } else {
-            result.currentPath.push(path);
-          }
-          // console.log("/" + result.currentPath.join("/"));
-        }
+const getFileList = (data: string[]) => {
+  let currentPath: string[] = [];
+  let fullPath = "";
+  const files: string[] = [];
+
+  for (const line of data) {
+    if (isFile(line)) {
+      const [size, file] = line.split(" ");
+      files.push(`${fullPath}/${file} ${size}`);
+    }
+
+    if (line.startsWith("$ cd")) {
+      const dir = line.split(" ")[2];
+
+      if (dir === "/") {
+        currentPath = [""];
+      } else if (dir === "..") {
+        currentPath.pop();
+      } else {
+        currentPath.push(dir);
       }
+      fullPath = currentPath.join("/");
+    }
+  }
 
-      if (isFile(line)) {
-        if (
-          !Array.isArray(result.folders["/" + result.currentPath.join("/")])
-        ) {
-          result.folders["/" + result.currentPath.join("/")] = [];
-        }
-
-        result.folders["/" + result.currentPath.join("/")].push(line);
-      }
-
-      return result;
-    },
-    { currentPath: [], folders: {} } as ResultType
-  );
-
-  return directories.folders;
+  return files;
 };
 
-// const parseFile;
-
 export const part1 = (data: string[]): number => {
-  const f = parseDirs(data);
-  // console.log(f);
-  const x = mapValues(f, (a) =>
-    a
-      .map((file: any) => file.split(" ")[0])
-      .map(Number)
-      .reduce(sum)
-  );
-  // console.log(x);
+  const files = getFileList(data);
+  console.log(files);
 
-  // add sizes from subfolders
-  const entries = Object.entries(x);
-  const y = mapValues(
-    x,
-    (size: number, path: string) =>
-      size +
-      entries
-        .filter(([k, v]) => k.startsWith(path) && k.length > path.length)
-        .map(([k, v]) => v)
-        .reduce(sum, 0)
-  );
-  // console.log(y);
+  const result: Record<string, number> = {};
 
-  return Object.values(y)
-    .filter((x) => x <= 100000)
+  // every file increments all of its parents folders size
+  for (const file of files) {
+    //[ '', 'a', 'e', 'i 584' ]
+    const [root, ...segments] = file.split("/");
+    const fileSize = Number(last(last(segments).split(" ")));
+
+    const pathSegments = ["", ...segments];
+    // console.log("-----------------------");
+    for (let i = 0; i < pathSegments.length - 1; i++) {
+      const path = pathSegments.slice(0, i + 1).join("/") || "/";
+      result[path] = (result[path] ?? 0) + fileSize;
+      // console.log({
+      //   // segments: pathSegments,
+      //   element: ,
+      //   size: fileSize,
+      // });
+    }
+  }
+
+  console.log(result);
+
+  return Object.values(result)
+    .filter((x) => x <= 100_000)
     .reduce(sum);
 };
 
