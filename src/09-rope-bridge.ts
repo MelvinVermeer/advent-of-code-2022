@@ -1,4 +1,4 @@
-import { last, unique } from "./shared/array";
+import { first, last, unique } from "./shared/array";
 
 type Position = [number, number];
 
@@ -56,6 +56,29 @@ export const part1 = (data: string[]): number => {
   return k.length;
 };
 
-export const part2 = (data: any): any => {
-  return data;
+export const part2 = (data: string[]): number => {
+  const instructions = data
+    .map((x) => x.split(" "))
+    .map(([d, n]) => [d, Number(n)]);
+
+  let snake: Position[] = new Array(10).fill([0, 0]);
+  const visited: Position[] = [[0, 0]];
+
+  for (const [direction, steps] of instructions) {
+    for (let i = 0; i < steps; i++) {
+      const newHead = arraySum(navigate[direction], first(snake));
+      snake[0] = newHead as Position;
+
+      for (let b = 1; b <= 9; b++) {
+        snake[b] = getNewTailLocation(snake[b - 1], snake[b]);
+      }
+
+      visited.push(last(snake));
+      // snake.push(newTail);
+    }
+  }
+  const k = unique(visited.map(([x, y]) => `${x},${y}`));
+  console.log(k);
+
+  return k.length;
 };

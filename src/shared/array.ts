@@ -40,3 +40,4 @@ export const transpose = <T>(prev: T[][], next: T[]) =>
   next.map((_, i) => (prev[i] ?? []).concat(next[i]));
 
 export const last = <T>(array: T[]) => array[array.length - 1];
+export const first = <T>(array: T[]) => array[0];
