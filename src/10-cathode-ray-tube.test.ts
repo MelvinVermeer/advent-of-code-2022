@@ -158,8 +158,8 @@ describe("10 - Cathode-Ray Tube", () => {
       expect(part1(sample)).toEqual(13140);
     });
 
-    xit("Answer", () => {
-      expect(part1(data)).toEqual(data);
+    it("Answer", () => {
+      expect(part1(data)).toEqual(16480);
     });
   });
 

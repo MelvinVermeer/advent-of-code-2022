@@ -2,30 +2,30 @@ import { sum } from "./shared/math";
 
 export const part1 = (data: string[]): number => {
   let x = 1;
-
+  let cycleCount = 0;
   const strengths: number[] = [];
-  const xs: number[] = [];
 
-  const actions = data.flatMap((x) => (x === "noop" ? "noop" : x.split(" ")));
+  for (let i = 0; i < data.length; i++) {
+    const row = data[i];
 
-  for (let i = 1; i < actions.length; i++) {
-    const row = actions[i];
+    if (row === "noop") {
+      cycleCount++;
+      if (cycleCount % 40 === 20) {
+        strengths.push(x * cycleCount);
+      }
+    } else {
+      cycleCount++;
+      if (cycleCount % 40 === 20) {
+        strengths.push(x * cycleCount);
+      }
+      cycleCount++;
+      if (cycleCount % 40 === 20) {
+        strengths.push(x * cycleCount);
+      }
 
-    if (i % 40 === 20) {
-      console.log({ i, x });
-      strengths.push(i * x);
-    }
-
-    if (row !== "noop" && row !== "addx") {
-      x = x + Number(row);
-      xs.push(x);
+      x += Number(row.slice(5, row.length));
     }
   }
-
-  console.log("length", actions.length);
-  console.log("strengts", strengths);
-  console.log("sum", strengths.reduce(sum));
-  console.log(xs);
   return strengths.reduce(sum);
 };
 
