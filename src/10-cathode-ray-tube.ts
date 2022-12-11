@@ -1,3 +1,4 @@
+import { groupsOfSizeN } from "./shared/array";
 import { sum } from "./shared/math";
 
 export const part1 = (data: string[]): number => {
@@ -29,6 +30,39 @@ export const part1 = (data: string[]): number => {
   return strengths.reduce(sum);
 };
 
-export const part2 = (data: any): any => {
-  return data;
+export const part2 = (data: string[]): any => {
+  let spritePos = 1;
+
+  let screen = "";
+
+  for (let i = 0; i < data.length; i++) {
+    const row = data[i];
+
+    if (row === "noop") {
+      screen = xxxx(spritePos, screen);
+    } else {
+      screen = xxxx(spritePos, screen);
+      screen = xxxx(spritePos, screen);
+
+      spritePos += Number(row.slice(5, row.length));
+    }
+  }
+
+  return screen
+    .split("")
+    .reduce(groupsOfSizeN(40), [[]] as string[][])
+    .map((x) => x.join(""))
+    .join("\n");
 };
+
+function xxxx(spritePos: number, screen: string) {
+  if (
+    spritePos >= (screen.length % 40) - 1 &&
+    spritePos <= (screen.length % 40) + 1
+  ) {
+    screen += "#";
+  } else {
+    screen += ".";
+  }
+  return screen;
+}
