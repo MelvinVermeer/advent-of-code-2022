@@ -1,24 +1,32 @@
+import { sum } from "./shared/math";
+
 export const part1 = (data: string[]): number => {
   let x = 1;
-  let cycleCount = 0; // start at 0 or 1?
 
-  const strengts: number[] = [];
+  const strengths: number[] = [];
+  const xs: number[] = [];
 
-  for (let i = 0; i < data.length; i++) {
-    const row = data[i];
+  const actions = data.flatMap((x) => (x === "noop" ? "noop" : x.split(" ")));
 
-    if (row === "noop") {
-      cycleCount++;
-    } else {
+  for (let i = 1; i < actions.length; i++) {
+    const row = actions[i];
+
+    if (i % 40 === 20) {
+      console.log({ i, x });
+      strengths.push(i * x);
     }
 
-    if (cycleCount % 40 === 20) {
-      strengts.push(cycleCount * x);
+    if (row !== "noop" && row !== "addx") {
+      x = x + Number(row);
+      xs.push(x);
     }
   }
 
-  console.log("strengts", strengts);
-  return 13140;
+  console.log("length", actions.length);
+  console.log("strengts", strengths);
+  console.log("sum", strengths.reduce(sum));
+  console.log(xs);
+  return strengths.reduce(sum);
 };
 
 export const part2 = (data: any): any => {
