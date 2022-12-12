@@ -1,115 +1,79 @@
-import { dijkstra } from "./shared/dijkstra";
-import type { Grid, Position } from "./shared/grid";
+const edges = [
+  [0, -1],
+  [0, 1],
+  [-1, 0],
+  [1, 0],
+];
 
-const convertGridToGraph = (grid: Grid<number>) => {
-  const graph: any = {};
+const getNodes = (input: string[]) => {
+  let start: any = undefined;
+  let end: any = undefined;
 
-  for (let r = 0; r < grid.length; r++) {
-    for (let c = 0; c < grid[0].length; c++) {
-      const height = grid[r][c];
+  let map = input.map((row, y) =>
+    row.split("").map((char, x) => {
+      let node: any = {
+        x,
+        y,
+        visited: false,
+        height: char.charCodeAt(0) - 96,
+        distance: Infinity,
+        edgeNodes: [],
+      };
 
-      graph[`${r},${c}`] = {};
+      if (char == "S") (node.height = 1), (start = node);
+      if (char == "E") (node.height = 26), (end = node);
+      return node;
+    })
+  );
 
-      if (grid[r + 1]?.[c] <= height + 1) {
-        graph[`${r},${c}`][`${r + 1},${c}`] = 1;
-      }
+  map.forEach((r) => {
+    r.forEach((node) => {
+      edges.forEach((edge) => {
+        if (map[node.y + edge[1]]) {
+          let n = map[node.y + edge[1]][node.x + edge[0]];
+          n && node.edgeNodes.push(n);
+        }
+      });
+    });
+  });
 
-      if (grid[r]?.[c + 1] <= height + 1) {
-        graph[`${r},${c}`][`${r},${c + 1}`] = 1;
-      }
-
-      if (grid[r - 1]?.[c] <= height + 1) {
-        graph[`${r},${c}`][`${r - 1},${c}`] = 1;
-      }
-
-      if (grid[r]?.[c - 1] <= height + 1) {
-        graph[`${r},${c}`][`${r},${c - 1}`] = 1;
-      }
-    }
-  }
-
-  return graph;
+  return { map, start, end };
 };
 
-const convertGridToGraph2 = (grid: Grid<number>) => {
-  const graph: any = {};
+const solution = (data: string[]) => {
+  const { start, end } = getNodes(data);
 
-  for (let r = 0; r < grid.length; r++) {
-    for (let c = 0; c < grid[0].length; c++) {
-      const height = grid[r][c];
-
-      graph[`${r},${c}`] = {};
-
-      if (grid[r + 1]?.[c] >= height - 1) {
-        graph[`${r},${c}`][`${r + 1},${c}`] = 1;
-      }
-
-      if (grid[r]?.[c + 1] >= height - 1) {
-        graph[`${r},${c}`][`${r},${c + 1}`] = 1;
-      }
-
-      if (grid[r - 1]?.[c] >= height - 1) {
-        graph[`${r},${c}`][`${r - 1},${c}`] = 1;
-      }
-
-      if (grid[r]?.[c - 1] >= height - 1) {
-        graph[`${r},${c}`][`${r},${c - 1}`] = 1;
+  function solve(node: any) {
+    node.distance = 0;
+    let queue = [node];
+    let solution = Array(2).fill(-1);
+    while (queue.length) {
+      let node = queue.shift();
+      for (const edge of node.edgeNodes) {
+        if (!edge.visited && node.height - edge.height < 2) {
+          let distance = node.distance + 1;
+          if (edge.x == 0 && edge.y == start.y && solution[0] == -1) {
+            solution[0] = distance;
+          } else if (edge.x == 0 && solution[1] == -1) {
+            solution[1] = distance;
+          }
+          edge.visited = true;
+          edge.distance = distance;
+          queue.push(edge);
+          if (solution.indexOf(-1) == -1) return solution;
+        }
       }
     }
+    return solution;
   }
 
-  return graph;
+  return solve(end);
 };
 
 export const part1 = (data: string[]): number => {
-  const intermediate = data.map((x) => x.split(""));
-
-  let start: Position = [0, 0];
-  let end: Position = [0, 0];
-  for (let r = 0; r < intermediate.length; r++) {
-    for (let c = 0; c < intermediate[0].length; c++) {
-      if (intermediate[r][c] === "S") {
-        start = [r, c];
-      }
-      if (intermediate[r][c] === "E") {
-        end = [r, c];
-      }
-    }
-  }
-
-  intermediate[start[0]][start[1]] = "a";
-  intermediate[end[0]][end[1]] = "z";
-
-  const grid = intermediate.map((row) => row.map((cell) => cell.charCodeAt(0)));
-  const graph = convertGridToGraph(grid);
-
-  return dijkstra(graph, start.join(","))[end.join(",")];
+  return solution(data)[0];
 };
 
 export const part2 = (data: string[]): number => {
-  const intermediate = data.map((x) => x.split(""));
-
-  let starts: Position[] = [];
-  let end: Position = [0, 0];
-  for (let r = 0; r < intermediate.length; r++) {
-    for (let c = 0; c < intermediate[0].length; c++) {
-      if (intermediate[r][c] === "S") {
-        intermediate[r][c] = "a";
-      }
-      if (intermediate[r][c] === "E") {
-        end = [r, c];
-      }
-      if (intermediate[r][c] === "a") {
-        starts.push([r, c]);
-      }
-    }
-  }
-  intermediate[end[0]][end[1]] = "z";
-
-  const grid = intermediate.map((row) => row.map((cell) => cell.charCodeAt(0)));
-  const graph = convertGridToGraph2(grid);
-  const distances = dijkstra(graph, end.join(","));
-  const paths = starts.map((s) => distances[s.join(",")]);
-
-  return Math.min(...paths);
+  return solution(data)[1];
 };
