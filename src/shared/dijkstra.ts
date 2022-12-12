@@ -1,4 +1,4 @@
-export const dijkstra = (graph: any, source: string, end: string) => {
+export const dijkstra = (graph: any, source: string) => {
   const distances: any = Object.keys(graph).reduce(
     (a, c) => ({ ...a, [c]: Infinity }),
     {}
@@ -30,7 +30,7 @@ export const dijkstra = (graph: any, source: string, end: string) => {
     currVertex = vertexWithMinDistance(distances, visited);
   }
 
-  return distances[end];
+  return distances;
 };
 
 const vertexWithMinDistance = (

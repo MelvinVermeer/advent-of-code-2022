@@ -18,11 +18,11 @@ describe("12 - Hill Climbing Algorithm", () => {
 
   describe("Part 2", () => {
     it("Sample", () => {
-      expect(part2(sample)).toEqual(sample);
+      expect(part2(sample)).toEqual(29);
     });
 
-    xit("Answer", () => {
-      expect(part2(data)).toEqual(data);
+    it("Answer", () => {
+      expect(part2(data)).toEqual(349);
     });
   });
 });
