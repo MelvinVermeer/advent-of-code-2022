@@ -41,7 +41,6 @@ export const part1 = (data: string[]): number => {
   for (const [direction, steps] of instructions) {
     for (let i = 0; i < steps; i++) {
       head = arraySum(navigate[direction], head);
-      // if tail is distance away move tail (by pushing)
 
       const newTail: Position = getNewTailLocation(
         head as Position,
@@ -74,11 +73,8 @@ export const part2 = (data: string[]): number => {
       }
 
       visited.push(last(snake));
-      // snake.push(newTail);
     }
   }
   const k = unique(visited.map(([x, y]) => `${x},${y}`));
-  console.log(k);
-
   return k.length;
 };
