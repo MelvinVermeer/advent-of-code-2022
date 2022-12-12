@@ -4,8 +4,63 @@
 // acctuvwj
 // abdefghi
 
+import { dijkstra } from "./shared/dijkstra";
+
+const convertGridToGraph = (grid: number[][]) => {
+  const graph: any = {};
+
+  for (let r = 0; r < grid.length; r++) {
+    for (let c = 0; c < grid[0].length; c++) {
+      const height = grid[r][c];
+
+      graph[`${r},${c}`] = {};
+
+      if (grid[r + 1]?.[c] <= height + 1) {
+        graph[`${r},${c}`][`${r + 1},${c}`] = 1;
+      }
+
+      if (grid[r]?.[c + 1] <= height + 1) {
+        graph[`${r},${c}`][`${r},${c + 1}`] = 1;
+      }
+
+      if (grid[r - 1]?.[c] <= height + 1) {
+        graph[`${r},${c}`][`${r - 1},${c}`] = 1;
+      }
+
+      if (grid[r]?.[c - 1] <= height + 1) {
+        graph[`${r},${c}`][`${r},${c - 1}`] = 1;
+      }
+    }
+  }
+
+  return graph;
+};
+
+type Position = [number, number];
+
 export const part1 = (data: string[]): number => {
-  return 31;
+  const intermediate = data.map((x) => x.split(""));
+
+  let start: Position = [0, 0];
+  let end: Position = [0, 0];
+  for (let r = 0; r < intermediate.length; r++) {
+    for (let c = 0; c < intermediate[0].length; c++) {
+      if (intermediate[r][c] === "S") {
+        start = [r, c];
+      }
+      if (intermediate[r][c] === "E") {
+        end = [r, c];
+      }
+    }
+  }
+
+  intermediate[start[0]][start[1]] = "a";
+  intermediate[end[0]][end[1]] = "z";
+
+  const grid = intermediate.map((row) => row.map((cell) => cell.charCodeAt(0)));
+  const graph = convertGridToGraph(grid);
+
+  return dijkstra(graph, start.join(","), end.join(","));
 };
 
 export const part2 = (data: any): any => {

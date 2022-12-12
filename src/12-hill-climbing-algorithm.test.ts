@@ -11,8 +11,8 @@ describe("12 - Hill Climbing Algorithm", () => {
       expect(part1(sample)).toEqual(31);
     });
 
-    xit("Answer", () => {
-      expect(part1(data)).toEqual(data);
+    it("Answer", () => {
+      expect(part1(data)).toEqual(350);
     });
   });
 
