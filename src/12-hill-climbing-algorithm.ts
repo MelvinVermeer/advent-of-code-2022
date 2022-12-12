@@ -1,12 +1,9 @@
-// Sabqponm
-// abcryxxl
-// accszExk
-// acctuvwj
-// abdefghi
-
 import { dijkstra } from "./shared/dijkstra";
 
-const convertGridToGraph = (grid: number[][]) => {
+type Position = [number, number];
+type Grid = number[][];
+
+const convertGridToGraph = (grid: Grid) => {
   const graph: any = {};
 
   for (let r = 0; r < grid.length; r++) {
@@ -36,7 +33,7 @@ const convertGridToGraph = (grid: number[][]) => {
   return graph;
 };
 
-const convertGridToGraph2 = (grid: number[][]) => {
+const convertGridToGraph2 = (grid: Grid) => {
   const graph: any = {};
 
   for (let r = 0; r < grid.length; r++) {
@@ -65,8 +62,6 @@ const convertGridToGraph2 = (grid: number[][]) => {
 
   return graph;
 };
-
-type Position = [number, number];
 
 export const part1 = (data: string[]): number => {
   const intermediate = data.map((x) => x.split(""));
@@ -115,7 +110,6 @@ export const part2 = (data: string[]): number => {
 
   const grid = intermediate.map((row) => row.map((cell) => cell.charCodeAt(0)));
   const graph = convertGridToGraph2(grid);
-
   const distances = dijkstra(graph, end.join(","));
   const paths = starts.map((s) => distances[s.join(",")]);
 
