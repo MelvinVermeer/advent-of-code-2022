@@ -127,26 +127,35 @@ export const part1 = (data: string[]): number => {
   return visibleCount;
 };
 
-export const part2 = (data: string[]): any => {
+function getScore(grid: number[][], r: number, c: number) {
+  const east = grid[r].slice(c + 1);
+  const west = grid[r].slice(0, Math.max(c, 0)).reverse();
+  const south = grid.slice(r + 1).map((row) => row[c]);
+  const north = grid
+    .slice(0, Math.max(r, 0))
+    .map((row) => row[c])
+    .reverse();
+
+  const height = grid[r][c];
+
+  const treeLines = [north, east, south, west].map((line) => {
+    const blockingTreeIndex = line.findIndex((tree) => tree >= height);
+    return blockingTreeIndex === -1 ? line.length : blockingTreeIndex + 1;
+  });
+
+  return treeLines.reduce(product);
+}
+
+export const part2 = (data: string[]): number => {
   const grid = data.map((row) => row.split("").map(Number));
+
   let maxScore = 0;
+
   for (let r = 0; r < grid.length; r++) {
     for (let c = 0; c < grid[r].length; c++) {
-      const y = calculateScenicScore(grid, r, c);
-      const x = y.reduce(product);
-      if (x > maxScore) {
-        console.log({
-          r,
-          c,
-          x,
-          y,
-          h: grid[r][c],
-        });
-      }
-      maxScore = Math.max(maxScore, x);
+      const score = getScore(grid, r, c);
+      maxScore = Math.max(score, maxScore);
     }
   }
-  // console.log(visibleCount);
-  // printGrid(grid);
   return maxScore;
 };

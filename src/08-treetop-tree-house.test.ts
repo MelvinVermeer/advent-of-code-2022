@@ -12,7 +12,6 @@ describe("08 - Treetop Tree House", () => {
     });
 
     xit("Answer", () => {
-      /// 1500 too low
       expect(part1(data)).toBe(1849);
     });
   });
@@ -23,8 +22,7 @@ describe("08 - Treetop Tree House", () => {
     });
 
     it("Answer", () => {
-      // 784 is too low
-      expect(part2(data)).toBeGreaterThan(784);
+      expect(part2(data)).toEqual(201600);
     });
   });
 });
