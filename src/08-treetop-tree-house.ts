@@ -1,6 +1,5 @@
+import type { Grid } from "./shared/grid";
 import { product } from "./shared/math";
-
-type Grid = (number | string)[][];
 
 const getTreeLines = (grid: Grid, r: number, c: number) => ({
   north: grid.slice(0, Math.max(r, 0)).map((row) => row[c]),

@@ -39,10 +39,10 @@ export const part2 = (data: string[]): any => {
     const row = data[i];
 
     if (row === "noop") {
-      screen = xxxx(spritePos, screen);
+      screen += shouldBeLit(spritePos, screen) ? "#" : ".";
     } else {
-      screen = xxxx(spritePos, screen);
-      screen = xxxx(spritePos, screen);
+      screen += shouldBeLit(spritePos, screen) ? "#" : ".";
+      screen += shouldBeLit(spritePos, screen) ? "#" : ".";
 
       spritePos += Number(row.slice(5, row.length));
     }
@@ -55,14 +55,6 @@ export const part2 = (data: string[]): any => {
     .join("\n");
 };
 
-function xxxx(spritePos: number, screen: string) {
-  if (
-    spritePos >= (screen.length % 40) - 1 &&
-    spritePos <= (screen.length % 40) + 1
-  ) {
-    screen += "#";
-  } else {
-    screen += ".";
-  }
-  return screen;
-}
+const shouldBeLit = (spritePos: number, screen: string) =>
+  spritePos >= (screen.length % 40) - 1 &&
+  spritePos <= (screen.length % 40) + 1;

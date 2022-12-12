@@ -1,6 +1,5 @@
 import { first, last, unique } from "./shared/array";
-
-type Position = [number, number];
+import type { Position } from "./shared/grid";
 
 const navigate: any = {
   U: [0, 1],
