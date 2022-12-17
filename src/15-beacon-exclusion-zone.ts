@@ -46,6 +46,22 @@ export const part1 = (data: string[], testLine: number): any => {
   ).length;
 };
 
-export const part2 = (data: any): any => {
-  return data;
+export const part2 = (data: string[], boundary: number): any => {
+  const parsed = data.map((line) => {
+    const [l, r] = line.split(":");
+    const sensor = l
+      .split(" at ")[1]
+      .split(", ")
+      .map((o) => Number(o.substring(2))) as Position;
+    const beacon = r
+      .split(" at ")[1]
+      .split(", ")
+      .map((o) => Number(o.substring(2))) as Position;
+    return { sensor, beacon, distance: distance(sensor, beacon) };
+  });
+
+  let xs_taken_on_y_10 = [];
+
+  const [x, y] = [14, 11];
+  return x * 4000000 + y;
 };

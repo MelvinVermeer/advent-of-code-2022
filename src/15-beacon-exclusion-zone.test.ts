@@ -22,22 +22,22 @@ describe("15 - Beacon Exclusion Zone", () => {
   ];
 
   describe("Part 1", () => {
-    it("Sample", () => {
+    xit("Sample", () => {
       expect(part1(sample, 10)).toEqual(26);
     });
 
-    it("Answer", () => {
+    xit("Answer", () => {
       expect(part1(data, 2000000)).toEqual(4725496);
     });
   });
 
   describe("Part 2", () => {
     it("Sample", () => {
-      expect(part2(sample)).toEqual(sample);
+      expect(part2(sample, 20)).toEqual(56000011);
     });
 
     xit("Answer", () => {
-      expect(part2(data)).toEqual(data);
+      expect(part2(data, 4_000_000)).toEqual(0);
     });
   });
 });
