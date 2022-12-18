@@ -1,9 +1,7 @@
 import { dijkstra } from "./shared/dijkstra";
+import type { Grid, Position } from "./shared/grid";
 
-type Position = [number, number];
-type Grid = number[][];
-
-const convertGridToGraph = (grid: Grid) => {
+const convertGridToGraph = (grid: Grid<number>) => {
   const graph: any = {};
 
   for (let r = 0; r < grid.length; r++) {
@@ -33,7 +31,7 @@ const convertGridToGraph = (grid: Grid) => {
   return graph;
 };
 
-const convertGridToGraph2 = (grid: Grid) => {
+const convertGridToGraph2 = (grid: Grid<number>) => {
   const graph: any = {};
 
   for (let r = 0; r < grid.length; r++) {
